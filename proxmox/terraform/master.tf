@@ -31,5 +31,5 @@ resource "proxmox_vm_qemu" "master" {
         cidrhost(local.cidr, 1)
     )
     ciuser = local.cloud_init.user
-    sshkeys = local.sshkeys
+    sshkeys = local.cloud_init.ssh_public_key
 }
