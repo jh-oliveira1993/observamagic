@@ -1,4 +1,6 @@
-<b>Criar um usuário no proxmox com as permissões para o terraform.</b>
+<h2> Terraform </h2>
+
+<b>Criar credenciais no proxmox com as permissões para o terraform.</b>
 
 1 - Criando a role
 ```bash
@@ -25,6 +27,8 @@ Copie esse código e vamos utlizar no "<token secret>".
 5 - Coloque essas credenciais dentro de um arquivo `.env`. Como boa pratica, deve-se colocar o .env no gitignore.
 
 ```bash
+export PM_API_URL="https://192.168.0.200:8006/api2/json"
+export PM_TLS_INSECURE=true
 export PM_API_TOKEN_ID="<token id>"
 export PM_API_TOKEN_SECRET="<token secret>"
 ```
@@ -37,4 +41,4 @@ terraform init
 terraform apply
 ```
 
-Fonte utilizada => https://github.com/mateusmuller/mateusmullerme-youtube/tree/main/kubernetes/02_kubernetes_production_ready/terraform
+Fonte => https://github.com/mateusmuller/mateusmullerme-youtube/tree/main/kubernetes/02_kubernetes_production_ready/terraform
