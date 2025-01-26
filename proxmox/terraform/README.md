@@ -41,4 +41,4 @@ terraform init
 terraform apply
 ```
 
-Fonte => https://github.com/mateusmuller/mateusmullerme-youtube/tree/main/kubernetes/02_kubernetes_production_ready/terraform
+Esse README e mais algumas idéias retiradas dessa fonte => https://github.com/mateusmuller/mateusmullerme-youtube/tree/main/kubernetes/02_kubernetes_production_ready/terraform
