@@ -6,7 +6,7 @@ locals {
     network_bridge = "vmbr0"
     ipv6    = "dhcp"
     cidr        = "192.168.0.0/24"
-    ostemplate = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
+    ostemplate = "local:vztmpl/rockylinux-9-default_20240912_amd64.tar.xz"
     password     = "tocomfome@10"
     target_node  = "pve"
     onboot       = true
