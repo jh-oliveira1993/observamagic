@@ -1,0 +1,25 @@
+[server]
+%{ for s in server }
+${s.lxc_name} ansible_host=${s.ip_address} ansible_user="root"
+%{ endfor }
+
+[database]
+%{ for s in database }
+${s.lxc_name} ansible_host=${s.ip_address} ansible_user="root"
+%{ endfor }
+
+[web]
+%{ for s in web }
+${s.lxc_name} ansible_host=${s.ip_address} ansible_user="root"
+%{ endfor }
+
+[proxy]
+%{ for s in proxy }
+${s.lxc_name} ansible_host=${s.ip_address} ansible_user="root"
+%{ endfor }
+
+[all:children]
+server
+database
+web
+proxy

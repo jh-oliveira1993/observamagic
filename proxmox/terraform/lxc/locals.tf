@@ -20,6 +20,7 @@ locals {
        swap     = "2048"
        size     = "8G"
        last_octect = 30
+       lxc_user = "root"
     }
     server = {
        count    = 1
@@ -28,7 +29,7 @@ locals {
        memory   = "1024"
        swap     = "2048"
        size     = "8G"
-       last_octect = 30
+       last_octect = 40
     }
     web = {
        count    = 1
@@ -37,7 +38,7 @@ locals {
        memory   = "1024"
        swap     = "2048"
        size     = "8G"
-       last_octect = 30
+       last_octect = 50
     }
     proxy = {
        count    = 1
