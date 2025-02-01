@@ -41,9 +41,22 @@ locals {
         cores   = 2
         sockets = 1
         ciuser  = "ubuntu"
+        vmid    = 800
         size    = "30G"
         count   = 1
         name    = "master"
         last_octect = 80
+    }
+
+    workers = {
+        memory  = 2048
+        cores   = 2
+        sockets = 1
+        ciuser  = "ubuntu"
+        vmid    = 900
+        size    = "30G"
+        count   = 2
+        name    = "worker"
+        last_octect = 90
     }
 }
