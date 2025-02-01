@@ -1,17 +1,22 @@
 Subir um cluster kubernetes utilizando terraform no proxmox
 
-provisionar as vms com terraform
+1 - Não esqueça de exportar as credenciais do proxmox, no diretŕio anterior informa no README.md
+```bash
+source .env
+```
+
+2 - Provisionar as vms com terraform
 ```bash
 terraform init
 terraform apply
 ```
 
-baixar o repo do kubespray
+3 - Baixar o repo do kubespray
 ```bash
 git git@github.com:kubernetes-sigs/kubespray.git
 ```
 
-Instalar o ansible  para executar o kubespray
+4 - Instalar o ansible  para executar o kubespray
 ```bash
 VENVDIR=kubespray-venv
 KUBESPRAYDIR=kubespray
@@ -21,7 +26,7 @@ cd $KUBESPRAYDIR
 pip install -U -r requirements.txt
 ```
 
-Executar playbook do kubespray baseado no inventário criado no terraform
+5 - Executar playbook do kubespray baseado no inventário criado no terraform
 ```bash
 ansible-playbook -i inventory.ini kubespray/cluster.yml
 ```
