@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "masters" {
     count = local.masters.count
     nameserver =  local.nameserver
-    vmid = local.masters.vmid
+    vmid = local.masters.vmid + count.index
     ciuser = local.masters.ciuser
     sshkeys = local.sshkeys
     agent = local.agent

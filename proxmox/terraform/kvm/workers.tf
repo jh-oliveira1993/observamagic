@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "workers" {
     count = local.workers.count
     nameserver =  local.nameserver
-    vmid = local.workers.vmid
+    vmid = local.workers.vmid + count.index
     ciuser = local.workers.ciuser
     sshkeys = local.sshkeys
     agent = local.agent
