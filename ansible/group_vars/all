@@ -1,0 +1,4 @@
+domain_local: douglasportugal.me
+allowed_networks:
+  - 192.168.0.0/24
+replicator_password: 'senhaSeguraAqui'

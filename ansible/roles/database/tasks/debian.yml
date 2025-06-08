@@ -1,0 +1,98 @@
+- name: Update all packages to latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+
+- name: Install PostgreSQL common package
+  ansible.builtin.apt:
+    name: postgresql-common
+    state: present
+
+- name: Configure PostgreSQL official repository
+  block:
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Import PostgreSQL GPG key
+      ansible.builtin.get_url:
+        url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+        dest: "/etc/apt/trusted.gpg.d/postgresql.asc"
+        mode: '0644'
+
+    - name: Add PostgreSQL APT repository
+      ansible.builtin.apt_repository:
+        repo: "deb http://apt.postgresql.org/pub/repos/apt jammy-pgdg main"
+        state: present
+        filename: 'pgdg'
+
+- name: Update all packages with dist-upgrade (post-repo)
+  ansible.builtin.apt:
+    upgrade: dist
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Install PostgreSQL packages
+  ansible.builtin.apt:
+    name:
+      - postgresql-17
+      - postgresql-contrib
+      - acl
+    state: present
+
+- name: Stop PostgreSQL service if running
+  ansible.builtin.service:
+    name: postgresql@17-main
+    state: stopped
+  ignore_errors: true
+
+- name: Remove corrupted configuration directory
+  ansible.builtin.file:
+    path: /etc/postgresql/17/main
+    state: absent
+
+- name: Remove corrupted data directory
+  ansible.builtin.file:
+    path: /var/lib/postgresql/17/main
+    state: absent
+
+- name: Create new PostgreSQL cluster and start it
+  ansible.builtin.command:
+    cmd: pg_createcluster 17 main --start
+
+- name: Deploy postgresql.conf template
+  ansible.builtin.template:
+    src: postgresql.conf.j2
+    dest: /etc/postgresql/17/main/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: '0644'
+
+- name: Deploy pg_hba.conf template
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: /etc/postgresql/17/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: '0640'
+
+- name: Ensure permissions for data directory
+  ansible.builtin.file:
+    path: /var/lib/postgresql/17/main
+    owner: postgres
+    group: postgres
+    recurse: true
+
+- name: Restart and enable PostgreSQL 17 service
+  ansible.builtin.systemd:
+    name: postgresql@17-main
+    state: restarted
+    enabled: true
+
+- name: Ensure user 'replicator' exists
+  become_user: postgres
+  community.postgresql.postgresql_user:
+    name: replicator
+    password: "{{ replicator_password }}"
+    role_attr_flags: "REPLICATION,LOGIN"
+    encrypted: yes

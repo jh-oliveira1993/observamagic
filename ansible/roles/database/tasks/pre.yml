@@ -1,4 +1,4 @@
-- name: Configure | DNS in /etc/hosts
+- name: Configure DNS in /etc/hosts
   become: true
   blockinfile:
     path: /etc/hosts

@@ -8,6 +8,6 @@ A Proxmox instance installed on a dedicated machine, with either:
 
 Ubuntu cloud-init template
 
-LXC container (prefer rocky linux or ubuntu)
+LXC container (prefer ubuntu)
 
 VPN connectivity between participating environments (e.g., between Douglas and José’s networks)
