@@ -8,21 +8,21 @@ ANSIBLE_DIR := $(ROOT_DIR)/ansible
 INVENTORY_FILE := $(TF_DIR)/inventory.ini
 ENV_FILE := $(TF_DIR)/.env
 
-init: provisioning
+init-lxc: lxc
 
 destroy:
 	@cd $(TF_DIR) && \
 	source $(ENV_FILE) && \
 	terraform destroy -auto-approve
 
-provisioning:
+lxc:
 	@cd $(TF_DIR) && \
 	source $(ENV_FILE) && \
 	terraform init && \
 	terraform apply -auto-approve && \
 	sleep 30s
 
-database:
+lxc-database:
 	@cd $(ANSIBLE_DIR) && \
 	python3 -m venv venv && \
 	source venv/bin/activate && \
