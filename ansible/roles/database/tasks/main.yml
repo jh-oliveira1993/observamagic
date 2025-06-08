@@ -1,0 +1,3 @@
+- name: Configure | Pre requires
+  include_tasks: pre.yml
+  when: inventory_hostname in groups['database']

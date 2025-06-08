@@ -1,0 +1,10 @@
+- name: Configure | DNS in /etc/hosts
+  become: true
+  blockinfile:
+    path: /etc/hosts
+    marker: "# {mark} zabbix"
+    block: |
+      {% for host in groups['database'] %}
+      {{ hostvars[host]['ansible_host'] }} {{ hostvars[host]['ansible_hostname'] }}.{{ domain_local }} {{ hostvars[host]['ansible_hostname'] }}
+      {% endfor %}
+  when: "'database' in group_names"
