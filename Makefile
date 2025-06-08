@@ -8,7 +8,7 @@ ANSIBLE_DIR := $(ROOT_DIR)/ansible
 INVENTORY_FILE := $(TF_DIR)/inventory.ini
 ENV_FILE := $(TF_DIR)/.env
 
-lxc-init: lxc-create
+lxc-init: lxc-create lxc-database
 
 lxc-destroy:
 	@cd $(TF_DIR) && \
