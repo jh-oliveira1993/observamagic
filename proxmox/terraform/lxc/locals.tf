@@ -12,7 +12,7 @@ locals {
   inv_user         = "root"
 
   database = {
-    count        = 3
+    count        = 1
     name         = "database"
     vmid         = 800
     cores        = 2

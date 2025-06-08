@@ -1,7 +1,13 @@
-# observamagic
+Project Overview
 
-A idéia desse colab entre amigos é se diverti estudando com foco em monitoramento e automação.
+This collaborative project is intended as a hands-on, enjoyable way for friends to deepen their knowledge of monitoring and automation.
 
-Já ter como pré requisito proxmox instalado em uma máquina apartada com o template cloud-init do ubuntu.
-Ter uma acesso entre as redes, no caso minha e do José, via VPN.
+Requirements
 
+A Proxmox instance installed on a dedicated machine, with either:
+
+Ubuntu cloud-init template
+
+LXC container (prefer rocky linux or ubuntu)
+
+VPN connectivity between participating environments (e.g., between Douglas and José’s networks)

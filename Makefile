@@ -8,14 +8,14 @@ ANSIBLE_DIR := $(ROOT_DIR)/ansible
 INVENTORY_FILE := $(TF_DIR)/inventory.ini
 ENV_FILE := $(TF_DIR)/.env
 
-init-lxc: lxc
+lxc-init: lxc-create
 
-destroy:
+lxc-destroy:
 	@cd $(TF_DIR) && \
 	source $(ENV_FILE) && \
 	terraform destroy -auto-approve
 
-lxc:
+lxc-create:
 	@cd $(TF_DIR) && \
 	source $(ENV_FILE) && \
 	terraform init && \
