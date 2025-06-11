@@ -1,0 +1,15 @@
+[Unit]
+Description=PostgreSQL 16 Custom Instance
+After=network.target
+
+[Service]
+User=postgres
+Group=postgres
+ExecStart=/usr/lib/postgresql/16/bin/postgres -D /opt/pgsql/data
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+TimeoutSec=0
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

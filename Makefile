@@ -20,11 +20,12 @@ lxc-create:
 	source $(ENV_FILE) && \
 	terraform init && \
 	terraform apply -auto-approve && \
-	sleep 30s
+	sleep 240s
 
 lxc-database:
 	@cd $(ANSIBLE_DIR) && \
 	python3 -m venv venv && \
 	source venv/bin/activate && \
 	pip install -r $(ANSIBLE_DIR)/requirements.txt && \
+	pip install --upgrade pip && \
 	ansible-playbook -v database.yml

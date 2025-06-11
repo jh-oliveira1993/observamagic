@@ -1,0 +1,75 @@
+- name: Update all system packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Add official PostgreSQL 16 repository
+  ansible.builtin.dnf:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Disable default PostgreSQL module
+  ansible.builtin.command: dnf -qy module disable postgresql
+  args:
+    creates: /etc/dnf/modules.d/postgresql.module
+
+- name: Install PostgreSQL 16 server package
+  ansible.builtin.dnf:
+    name: postgresql16-server
+    state: present
+
+- name: Initialize PostgreSQL 16 database
+  ansible.builtin.command: /usr/pgsql-16/bin/postgresql-16-setup initdb
+  args:
+    creates: /var/lib/pgsql/16/data/PG_VERSION
+
+- name: Enable and start PostgreSQL 16 service
+  ansible.builtin.systemd:
+    name: postgresql-16
+    enabled: true
+    state: started
+
+- name: Ensure local authentication uses md5 in pg_hba.conf
+  ansible.builtin.lineinfile:
+    path: /var/lib/pgsql/16/data/pg_hba.conf
+    regexp: '^local\s+all\s+all\s+'
+    line: 'local   all             all                                     md5'
+    owner: postgres
+    group: postgres
+    mode: '0600'
+    backup: yes
+
+- name: Reload PostgreSQL 16 service to apply pg_hba.conf changes
+  ansible.builtin.systemd:
+    name: postgresql-16
+    state: reloaded
+
+- name: Ensure psycopg2 is installed on target host (RHEL-based)
+  ansible.builtin.dnf:
+    name: python3-psycopg2
+    state: present
+
+- name: Set password for postgres user
+  become_user: postgres
+  ansible.builtin.postgresql_user:
+    name: postgres
+    password: "StrongPasswordHere"
+
+- name: List PostgreSQL users
+  become_user: postgres
+  ansible.builtin.command: psql -c "\du"
+  register: pg_users
+
+- name: List PostgreSQL databases
+  become_user: postgres
+  ansible.builtin.command: psql -c "\l"
+  register: pg_dbs
+
+- name: Show found PostgreSQL users
+  ansible.builtin.debug:
+    var: pg_users.stdout_lines
+
+- name: Show found PostgreSQL databases
+  ansible.builtin.debug:
+    var: pg_dbs.stdout_lines
