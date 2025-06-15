@@ -1,0 +1,2 @@
+- name: Configure | Pre requires
+  include_tasks: pre.yml

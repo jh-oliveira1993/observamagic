@@ -8,7 +8,7 @@ ANSIBLE_DIR := $(ROOT_DIR)/ansible
 INVENTORY_FILE := $(TF_DIR)/inventory.ini
 ENV_FILE := $(TF_DIR)/.env
 
-lxc-init: lxc-create lxc-database
+lxc-init: lxc-create lxc-pre lxc-database
 
 lxc-destroy:
 	@cd $(TF_DIR) && \
@@ -21,6 +21,14 @@ lxc-create:
 	terraform init && \
 	terraform apply -auto-approve && \
 	sleep 240s
+
+lxc-pre:
+	@cd $(ANSIBLE_DIR) && \
+	python3 -m venv venv && \
+	source venv/bin/activate && \
+	pip install -r $(ANSIBLE_DIR)/requirements.txt && \
+	pip install --upgrade pip && \
+	ansible-playbook -v pre.yml
 
 lxc-database:
 	@cd $(ANSIBLE_DIR) && \
