@@ -14,32 +14,52 @@ locals {
   database = {
     count        = 1
     name         = "database"
-    vmid         = 800
+    vmid         = 500
     cores        = 2
     memory       = 1024
     storage      = "local-lvm"
     disk_size    = "20G"
+    last_octect  = 50
+  }
+  server = {
+    count        = 1
+    name         = "server"
+    vmid         = 600
+    cores        = 2
+    memory       = 1024
+    storage      = "local-lvm"
+    disk_size    = "8G"
+    last_octect  = 60
+  }
+  frontend = {
+    count        = 1
+    name         = "frontend"
+    vmid         = 700
+    cores        = 2
+    memory       = 1024
+    storage      = "local-lvm"
+    disk_size    = "8G"
+    last_octect  = 70
+  }
+  proxy = {
+    count        = 1
+    name         = "proxy"
+    vmid         = 800
+    cores        = 2
+    memory       = 1024
+    storage      = "local-lvm"
+    disk_size    = "8G"
     last_octect  = 80
   }
-  ha-node = {
-    count        = 2
-    name         = "ha-node"
-    vmid         = 810
-    cores        = 1
-    memory       = 512
+  grafana = {
+    count        = 1
+    name         = "grafana"
+    vmid         = 900
+    cores        = 2
+    memory       = 1024
     storage      = "local-lvm"
     disk_size    = "8G"
     last_octect  = 90
-  }
-    gf-node = {
-    count        = 1
-    name         = "gf-node"
-    vmid         = 820
-    cores        = 1
-    memory       = 512
-    storage      = "local-lvm"
-    disk_size    = "8G"
-    last_octect  = 150
   }
 }
 

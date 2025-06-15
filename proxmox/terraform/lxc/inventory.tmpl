@@ -2,3 +2,23 @@
 %{ for node in database ~}
 ${node.vm_name} ansible_host=${node.ip_address} ansible_user=${node.user}
 %{ endfor ~}
+
+[server]
+%{ for node in server ~}
+${node.vm_name} ansible_host=${node.ip_address} ansible_user=${node.user}
+%{ endfor ~}
+
+[frontend]
+%{ for node in frontend ~}
+${node.vm_name} ansible_host=${node.ip_address} ansible_user=${node.user}
+%{ endfor ~}
+
+[proxy]
+%{ for node in proxy ~}
+${node.vm_name} ansible_host=${node.ip_address} ansible_user=${node.user}
+%{ endfor ~}
+
+[grafana]
+%{ for node in grafana ~}
+${node.vm_name} ansible_host=${node.ip_address} ansible_user=${node.user}
+%{ endfor ~}
