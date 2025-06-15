@@ -1,0 +1,44 @@
+- name: Install Zabbix Frontend and tools packages
+  apt:
+    name:
+      - zabbix-frontend-php
+      - php8.1-pgsql
+      - zabbix-nginx-conf
+    state: present
+
+- name: Deploy zabbix.conf template
+  template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/conf.d/zabbix.conf
+    owner: www-data
+    group: www-data
+    mode: '0640'
+
+- name: Deploy zabbix.conf.php template
+  template:
+    src: zabbix.conf.php.j2
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: www-data
+    group: www-data
+    mode: '0640'
+
+- name: Garante que o locale en_US.UTF-8 está instalado
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Define LANG padrão do sistema como en_US.UTF-8
+  lineinfile:
+    path: /etc/default/locale
+    regexp: '^LANG='
+    line: 'LANG=en_US.UTF-8'
+    create: yes
+
+- name: Restarty and Enabled Nginx and PHP services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  loop:
+    - nginx
+    - php8.1-fpm

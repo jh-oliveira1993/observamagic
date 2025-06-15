@@ -1,0 +1,74 @@
+- name: Stopped Zabbix Server service
+  systemd:
+    name: zabbix-server
+    state: stopped
+  ignore_errors: true
+
+- name: Install Zabbix Server and tools
+  apt:
+    name:
+      - zabbix-server-pgsql
+      - zabbix-sql-scripts
+      - postgresql-client-16
+    state: present
+
+- name: Check if Zabbix schema already exists (table users)
+  community.postgresql.postgresql_query:
+    db: "{{ zabbix_db_name }}"
+    query: "SELECT to_regclass('public.users');"
+    login_host: "{{ zabbix_db_host }}"
+    login_user: "{{ postgres_admin_user }}"
+    login_password: "{{ postgres_admin_pass }}"
+    login_port: 5432
+  register: schema_check
+  failed_when: false
+  changed_when: false
+
+- name: Import initial Zabbix schema if not imported yet
+  become: true
+  become_user: zabbix
+  shell: |
+    export PGPASSWORD="{{ postgres_admin_pass }}"
+    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | psql \
+      --username={{ postgres_admin_user }} \
+      --host={{ zabbix_db_host }} \
+      --port=5432 \
+      --dbname={{ zabbix_db_name }}
+  args:
+    executable: /bin/bash
+  when: schema_check.query_result[0].to_regclass is none
+
+- name: Deploy zabbix_server.conf template
+  ansible.builtin.template:
+    src: zabbix_server.conf.j2
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: zabbix
+    group: zabbix
+
+- name: Deploy zabbix-server.service template
+  ansible.builtin.template:
+    src: zabbix-server.service.j2
+    dest: /lib/systemd/system/zabbix-server.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Grant all privileges to Zabbix DB user on all tables, sequences and functions
+  community.postgresql.postgresql_query:
+    db: "{{ zabbix_db_name }}"
+    login_host: "{{ zabbix_db_host }}"
+    login_user: "{{ postgres_admin_user }}"
+    login_password: "{{ postgres_admin_pass }}"
+    login_port: 5432
+    query: |
+      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ zabbix_db_user }};
+      GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO {{ zabbix_db_user }};
+      GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO {{ zabbix_db_user }};
+  changed_when: false
+
+- name: Restart and enable Zabbix Server service
+  ansible.builtin.systemd:
+    name: zabbix-server
+    enabled: yes
+    state: restarted
+    daemon_reload: yes

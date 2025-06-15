@@ -7,3 +7,33 @@
       {% for host in groups['all'] %}
       {{ hostvars[host]['ansible_host'] }} {{ hostvars[host]['ansible_hostname'] }}.{{ domain_local }} {{ hostvars[host]['ansible_hostname'] }}
       {% endfor %}
+
+- name: Install Packages
+  ansible.builtin.apt:
+    name:
+      - wget
+      - ca-certificates
+      - gnupg
+      - lsb-release
+      - python3-psycopg2
+    state: present
+
+- name: Instala repositório Zabbix
+  apt:
+    deb: "{{ zabbix_repo_url }}"
+    state: present
+
+- name: Add PostgreSQL APT repository GPG key
+  ansible.builtin.apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Add PostgreSQL APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+    state: present
+    filename: 'pgdg'
+
+- name: Atualiza cache
+  apt:
+    update_cache: yes

@@ -1,0 +1,5 @@
+- name: Install and Configure Monitoring
+  hosts: database server frontend proxy grafana
+  become: true
+  roles:
+    - zabbix

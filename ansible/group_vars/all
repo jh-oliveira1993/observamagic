@@ -1,5 +1,17 @@
 domain_local: douglasportugal.me
 allowed_networks:
   - 192.168.0.0/24
-replicator_password: 'senhaSeguraAqui'
-postgres_password: 'StrongPasswordHere'
+
+postgres_replicator_pass: 'StrongPasswordRep'
+postgres_admin_user: 'postgres'
+postgres_admin_pass: 'StrongPasswordHere'
+
+zabbix_db_host: "{{ hostvars[groups['database'][0]]['ansible_host'] }}"
+zabbix_db_user: 'zabbix'
+zabbix_db_name: 'zabbix'
+zabbix_db_pass: 'StrongPasswordZab'
+zabbix_repo_url: "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu22.04_all.deb"
+zabbix_server_host: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+zabbix_server_port: 10051
+zabbix_server_name: "Zabbix Homelab"
+zabbix_frontend_name: "{{ hostvars[groups['frontend'][0]]['ansible_hostname'] }}"

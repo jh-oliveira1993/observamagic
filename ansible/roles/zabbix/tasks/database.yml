@@ -1,0 +1,18 @@
+- name: Create Zabbix database user
+  community.postgresql.postgresql_user:
+    name: "{{ zabbix_db_user }}"
+    password: "{{ zabbix_db_pass }}"
+    encrypted: yes
+    login_host: "{{ zabbix_db_host }}"
+    login_user: "{{ postgres_admin_user }}"
+    login_password: "{{ postgres_admin_pass }}"
+    login_port: 5432
+
+- name: Create Zabbix database
+  community.postgresql.postgresql_db:
+    name: "{{ zabbix_db_name }}"
+    owner: "{{ zabbix_db_user }}"
+    login_host: "{{ zabbix_db_host }}"
+    login_user: "{{ postgres_admin_user }}"
+    login_password: "{{ postgres_admin_pass }}"
+    login_port: 5432

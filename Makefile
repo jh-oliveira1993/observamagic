@@ -8,7 +8,7 @@ ANSIBLE_DIR := $(ROOT_DIR)/ansible
 INVENTORY_FILE := $(TF_DIR)/inventory.ini
 ENV_FILE := $(TF_DIR)/.env
 
-lxc-init: lxc-create lxc-pre lxc-database
+lxc-init: lxc-create lxc-pre lxc-database lxc-zabbix
 
 lxc-destroy:
 	@cd $(TF_DIR) && \
@@ -37,3 +37,11 @@ lxc-database:
 	pip install -r $(ANSIBLE_DIR)/requirements.txt && \
 	pip install --upgrade pip && \
 	ansible-playbook -v database.yml
+
+lxc-zabbix:
+	@cd $(ANSIBLE_DIR) && \
+	python3 -m venv venv && \
+	source venv/bin/activate && \
+	pip install -r $(ANSIBLE_DIR)/requirements.txt && \
+	pip install --upgrade pip && \
+	ansible-playbook -v zabbix.yml

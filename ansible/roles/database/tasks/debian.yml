@@ -3,36 +3,11 @@
     update_cache: true
     cache_valid_time: 3600
 
-- name: Install required packages for adding repositories
+- name: Install Packages
   ansible.builtin.apt:
     name:
-      - wget
-      - ca-certificates
-      - gnupg
-      - lsb-release
-    state: present
-
-- name: Add PostgreSQL APT repository GPG key
-  ansible.builtin.apt_key:
-    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-    state: present
-
-- name: Add PostgreSQL APT repository
-  ansible.builtin.apt_repository:
-    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
-    state: present
-    filename: 'pgdg'
-
-- name: Update APT cache after adding PostgreSQL repo
-  ansible.builtin.apt:
-    update_cache: true
-
-- name: Install PostgreSQL 16 binaries only
-  ansible.builtin.apt:
-    name: 
       - postgresql-16
       - postgresql-client-16
-      - python3-psycopg2
     state: present
 
 - name: Disabled and stopped PostgreSQL 16 service
@@ -104,7 +79,7 @@
 - name: Set password for postgres user if not already set
   community.postgresql.postgresql_user:
     name: postgres
-    password: "{{ postgres_password }}"
+    password: "{{ postgres_admin_pass }}"
     login_unix_socket: /var/run/postgresql
     login_user: postgres
   become: true
