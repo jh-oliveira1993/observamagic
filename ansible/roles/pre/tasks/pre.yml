@@ -18,7 +18,7 @@
       - python3-psycopg2
     state: present
 
-- name: Instala repositório Zabbix
+- name: Install official Zabbix repository
   apt:
     deb: "{{ zabbix_repo_url }}"
     state: present
@@ -34,6 +34,6 @@
     state: present
     filename: 'pgdg'
 
-- name: Atualiza cache
+- name: Update cache
   apt:
     update_cache: yes

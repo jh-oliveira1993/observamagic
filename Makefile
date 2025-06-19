@@ -20,7 +20,7 @@ lxc-create:
 	source $(ENV_FILE) && \
 	terraform init && \
 	terraform apply -auto-approve && \
-	sleep 240s
+	sleep 300s
 
 lxc-pre:
 	@cd $(ANSIBLE_DIR) && \
