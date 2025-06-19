@@ -42,7 +42,7 @@ locals {
     last_octect  = 70
   }
   proxy = {
-    count        = 3
+    count        = 1
     name         = "proxy"
     vmid         = 800
     cores        = 2
@@ -52,7 +52,7 @@ locals {
     last_octect  = 80
   }
   grafana = {
-    count        = 0
+    count        = 1
     name         = "grafana"
     vmid         = 900
     cores        = 2

@@ -1,0 +1,36 @@
+- name: Stopped Grafana service
+  systemd:
+    name: grafana-server
+    state: stopped
+  ignore_errors: true
+
+- name: Add Grafana GPG key
+  ansible.builtin.apt_key:
+    url: https://packages.grafana.com/gpg.key
+    state: present
+
+- name: Add Grafana repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://packages.grafana.com/oss/deb stable main"
+    state: present
+    filename: grafana
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install Grafana package
+  ansible.builtin.apt:
+    name: grafana
+    state: present
+
+- name: Install Zabbix plugin via grafana-cli
+  ansible.builtin.command: grafana-cli plugins install alexanderzobnin-zabbix-app
+  args:
+    creates: /var/lib/grafana/plugins/alexanderzobnin-zabbix-app
+
+- name: Ensure Grafana service is restarted
+  ansible.builtin.service:
+    name: grafana-server
+    enabled: yes
+    state: restarted

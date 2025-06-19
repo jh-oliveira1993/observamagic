@@ -14,6 +14,6 @@
   include_tasks: proxy.yml
   when: inventory_hostname in groups['proxy'] and ansible_os_family == "Debian"
 
-# - name: Install and Configure Grafana 
-#   include_tasks: grafana.yml
-#   when: inventory_hostname in groups['grafana'] and ansible_os_family == "Debian"
+- name: Install and Configure Grafana 
+  include_tasks: grafana.yml
+  when: inventory_hostname in groups['grafana'] and ansible_os_family == "Debian"
