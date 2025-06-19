@@ -45,14 +45,6 @@
     owner: zabbix
     group: zabbix
 
-- name: Deploy zabbix-server.service template
-  ansible.builtin.template:
-    src: zabbix-server.service.j2
-    dest: /lib/systemd/system/zabbix-server.service
-    owner: root
-    group: root
-    mode: '0644'
-
 - name: Grant all privileges to Zabbix DB user on all tables, sequences and functions
   community.postgresql.postgresql_query:
     db: "{{ zabbix_db_name }}"

@@ -1,0 +1,24 @@
+- name: Stopped Zabbix Proxy service
+  systemd:
+    name: zabbix-proxy
+    state: stopped
+  ignore_errors: true
+
+- name: Install Zabbix Proxy and tools
+  apt:
+    name:
+      - zabbix-proxy-sqlite3
+    state: present
+
+- name: Deploy zabbix_proxy.conf template
+  ansible.builtin.template:
+    src: zabbix_proxy.conf.j2
+    dest: /etc/zabbix/zabbix_proxy.conf
+    owner: zabbix
+    group: zabbix
+
+- name: Restart and enable Zabbix Proxy service
+  ansible.builtin.systemd:
+    name: zabbix-proxy
+    enabled: yes
+    state: restarted

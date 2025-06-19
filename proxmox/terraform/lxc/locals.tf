@@ -42,7 +42,7 @@ locals {
     last_octect  = 70
   }
   proxy = {
-    count        = 0
+    count        = 3
     name         = "proxy"
     vmid         = 800
     cores        = 2

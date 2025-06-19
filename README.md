@@ -1,36 +1,20 @@
+
 Project Overview
 
-This collaborative project is intended as a hands-on, enjoyable way for friends to deepen their knowledge of monitoring and automation.
+This collaborative project provides a practical and engaging way for participants to enhance their skills in monitoring and automation.
 
 Requirements
 
-A Proxmox instance installed on a dedicated machine, with either:
+A Proxmox instance running on a dedicated physical machine, configured with one of the following:
 
 Ubuntu cloud-init template
 
-LXC container (prefer ubuntu)
+LXC container (preferably Ubuntu)
 
-VPN connectivity between participating environments (e.g., between Douglas and José’s networks)
+VPN connectivity between all participating environments (e.g., between Douglas and José’s networks)
 
+The project is designed to run one LXC container per participant.
 
+Scaling Policy
 
-# Be careful!
-Note: This should only be done after the project has been initialized with:
-```sh
-make lxc-init
-```
-Note: Before restoring the backup, make sure to stop the frontend and server services.
-
-```sh
-psql -h <IP> -U postgres -d postgres -c "DROP DATABASE IF EXISTS <APP_DATABASE>;"
-```
-```sh
-psql -h <IP> -U postgres -d postgres -c "CREATE DATABASE <APP_DATABASE> OWNER <APP_OWNER>;"
-```
-```sh
-psql -h <IP> -U <APP_OWNER> -d <APP_DATABASE> -f /path/to/backup.sql
-```
-Additional tips:
-Replace <IP>, <APP_DATABASE>, <APP_OWNER>, and /path/to/backup.sql with your actual values.
-Stop your application frontend and server before restoring to avoid conflicts or corruption.
-
+Only the proxy container group is designed to be scalable automatically. All other container groups require manual scaling and management.

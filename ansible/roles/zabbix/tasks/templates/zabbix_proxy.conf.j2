@@ -1,0 +1,17 @@
+ProxyMode=0
+Server={{ groups['server'] | map('extract', hostvars, 'ansible_host') | join(',') }}
+Hostname={{ hostvars[inventory_hostname]['ansible_hostname'] }}
+LogFile=/var/log/zabbix/zabbix_proxy.log
+LogFileSize=0
+PidFile=/run/zabbix/zabbix_proxy.pid
+SocketDir=/tmp
+DBName=/tmp/zabbix_proxy.db
+DBUser=zabbix
+ProxyBufferMode=hybrid
+ProxyMemoryBufferSize=16M
+SNMPTrapperFile=/var/log/snmptrap/snmptrap.log
+Timeout=30
+LogSlowQueries=3000
+StatsAllowedIP=127.0.0.1
+StartPingers=10
+EnableRemoteCommands=1

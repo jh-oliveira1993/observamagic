@@ -10,9 +10,9 @@
   include_tasks: frontend.yml
   when: inventory_hostname in groups['frontend'] and ansible_os_family == "Debian"
 
-# - name: Install and Configure Zabbix proxy 
-#   include_tasks: proxy.yml
-#   when: inventory_hostname in groups['proxy'] and ansible_os_family == "Debian"
+- name: Install and Configure Zabbix proxy 
+  include_tasks: proxy.yml
+  when: inventory_hostname in groups['proxy'] and ansible_os_family == "Debian"
 
 # - name: Install and Configure Grafana 
 #   include_tasks: grafana.yml
