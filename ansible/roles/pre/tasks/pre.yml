@@ -16,6 +16,7 @@
       - gnupg
       - lsb-release
       - python3-psycopg2
+      - sudo
     state: present
 
 - name: Install official Zabbix repository
@@ -37,3 +38,26 @@
 - name: Update cache
   apt:
     update_cache: yes
+
+- name: Change PasswordAuthentication yes in sshd_config
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*PasswordAuthentication\s*(=|\s)\s*\w+'
+    line: 'PasswordAuthentication yes'
+    backrefs: yes
+    state: present
+    insertafter: EOF
+
+- name: Change PermitRootLogin yes in sshd_config
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^\s*#?\s*PermitRootLogin\s*(=|\s)\s*\w+'
+    line: 'PermitRootLogin yes'
+    backrefs: yes
+    state: present
+    insertafter: EOF
+
+- name: Restart SSH
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
